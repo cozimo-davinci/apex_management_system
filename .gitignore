@@ -1,0 +1,14 @@
+# Node.js & React
+backend/node_modules/
+client/node_modules/
+
+# Build files
+client/build/
+backend/dist/
+
+# Vercel
+backend/.vercel/
+
+# OS generated files
+.DS_Store
+Thumbs.db
