@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddEmployee() {
     const [firstName, setFirstName] = useState('');
@@ -18,12 +20,12 @@ export default function AddEmployee() {
 
         // Validate input
         if (!firstName || !lastName || !email || !position || !salary || !dateOfJoining || !department) {
-            alert('All fields are required.');
+            toast.error('All fields are required.', { position: 'top-right' });
             return;
         }
 
         if (isNaN(Number(salary))) {
-            alert('Salary must be a valid number.');
+            toast.error('Salary must be a valid number.', { position: 'top-right' });
             return;
         }
 
@@ -39,7 +41,11 @@ export default function AddEmployee() {
             });
 
             if (response.status === 201) {
-                alert('Employee added successfully!');
+                toast.success('Employee added successfully!', {
+                    position: 'top-right',
+                    autoClose: 3000, // 3 seconds
+                });
+
                 // Clear form fields
                 setFirstName('');
                 setLastName('');
@@ -48,20 +54,39 @@ export default function AddEmployee() {
                 setSalary('');
                 setDateOfJoining('');
                 setDepartment('');
-                navigate('/employee');
+
+                // Navigate after delay to allow the user to see the notification
+                setTimeout(() => {
+                    navigate('/employee');
+                }, 3000);
             } else {
-                alert('Failed to add employee. Please try again.');
+                toast.error('Failed to add employee. Please try again.', { position: 'top-right' });
             }
         } catch (error) {
             console.error('Error adding employee:', error);
-            alert('An error occurred while adding the employee. Please try again.');
+            const errorMessage =
+                error.response?.data?.message || 'An error occurred while adding the employee. Please try again.';
+            toast.error(errorMessage, { position: 'top-right' });
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen w-96 bg-gray-900">
-            <div className="bg-green-600 w-full max-w-md py-8 px-14 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105
-             transition-shadow duration-300 border-black border-4 shadow-yellow-500">
+        <div className="flex justify-center items-center min-h-screen bg-black">
+            {/* Toastify Container */}
+            <ToastContainer />
+
+            <Link
+                to="/employee"
+                className="absolute top-20 left-8
+                 text-white font-bold bg-purple-600 
+                 rounded-md shadow-md shadow-white hover:shadow-yellow-400 p-4
+                 border-black border-4 hover:scale-105"
+            >
+                Back
+            </Link>
+
+            <div className="bg-black w-full max-w-md py-8 px-14 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105
+             transition-shadow duration-300 border-white border-4 shadow-yellow-500">
                 <h1 className="text-2xl font-bold text-white text-center mb-6">Add Employee</h1>
 
                 <form onSubmit={handleAddEmployee} className="space-y-5">
@@ -143,7 +168,7 @@ export default function AddEmployee() {
 
                     <button
                         type="submit"
-                        className="w-full h-10 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors"
+                        className="w-full h-10 bg-orange-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors"
                     >
                         Add Employee
                     </button>

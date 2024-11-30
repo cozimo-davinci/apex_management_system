@@ -51,7 +51,7 @@ export default function ViewEmployee() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 p-6">
+        <div className="min-h-screen bg-black p-6">
             <h1 className="text-2xl text-white font-bold mt-12 mb-5 text-center">Employee Details</h1>
 
             <div className="overflow-x-auto bg-black p-6 rounded-xl shadow-md shadow-teal-600 border-white border-4">

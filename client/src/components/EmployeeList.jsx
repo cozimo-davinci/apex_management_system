@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function EmployeeList() {
     const [employees, setEmployees] = useState([]);
@@ -24,7 +25,9 @@ export default function EmployeeList() {
 
     const fetchFilteredEmployees = async () => {
         if (!searchQuery) {
-            alert('Please enter a valid department or position');
+            toast.error('Please enter a valid Department or Position.', {
+                position: 'top-right',
+            });
             return;
         }
 
@@ -44,14 +47,23 @@ export default function EmployeeList() {
             if (response.data.length > 0) {
                 navigate('/find-employees', { state: { employees: response.data } });
             } else {
-                alert('No employees found matching the search criteria');
+                toast.error('No employee found for chosen criteria', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
             }
         } catch (error) {
             if (error.response) {
-                alert(`Error fetching employees: ${error.response.data.message}`);
+                toast.error(`Error fetching employees: ${error.response.data.message}`, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
             } else {
                 console.error('Error fetching employees:', error);
-                alert('Error fetching employees. Please try again.');
+                toast.error('Error fetching employees. Please try again.', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
             }
         }
     };
@@ -60,14 +72,23 @@ export default function EmployeeList() {
         try {
             const response = await axios.delete(`http://localhost:3002/api/v1/emp/employees/${id}`);
             if (response.status === 200) {
-                alert(response.data.message);
+                toast.success('Employee has been deleted successfully!', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
                 setEmployees(employees.filter((employee) => employee._id !== id)); // Update state after successful deletion
             } else {
-                alert('Failed to delete employee.');
+                toast.error('Failed to delete employee.', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
             }
         } catch (error) {
             console.error('Error deleting employee:', error);
-            alert('An error occurred while deleting the employee.');
+            toast.error('An error occurred while deleting the employee.', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
         }
     };
 
@@ -76,7 +97,7 @@ export default function EmployeeList() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 p-6">
+        <div className="min-h-screen bg-black p-6">
             <h2 className="text-2xl text-white font-bold mt-12 mb-12 text-center">Employee List</h2>
 
             <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
@@ -116,7 +137,7 @@ export default function EmployeeList() {
                 </button>
             </div>
 
-            <div className="overflow-x-auto bg-black p-6 rounded-xl shadow-md">
+            <div className="overflow-x-auto bg-gray-500 p-6 rounded-xl shadow-md shadow-white">
                 {employees && employees.length > 0 ? (
                     <table className="table-auto w-full text-left border-white border-2">
                         <thead>
@@ -150,23 +171,28 @@ export default function EmployeeList() {
 
                                     <td className="px-4 py-2 border-white border-2">
                                         <button
-                                            className="bg-purple-700 text-white px-3 py-2 rounded-md hover:bg-blue-600 mr-2"
+                                            className="bg-purple-700 text-white px-3 py-2 rounded-md hover:bg-blue-600 mr-2 font-bold
+                                        border-black border-2 shadow-md hover:shadow-white hover:scale-105"
                                             onClick={() => navigate('/view-employee', { state: { employeeId: employee._id } })}
                                         >
                                             View
                                         </button>
                                         <button
-                                            className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 mr-2"
+                                            className="bg-yellow-500 text-white px-3 py-2 rounded-md hover:bg-yellow-600 mr-2 font-bold
+                                        border-black border-2 shadow-md hover:shadow-white hover:scale-105"
                                             onClick={() => navigate('/edit-employee', { state: { employee } })}
                                         >
                                             Edit
                                         </button>
                                         <button
-                                            className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
+                                            className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 font-bold
+                                        border-black border-2 shadow-md hover:shadow-white hover:scale-105"
                                             onClick={() => deleteEmployee(employee._id)}
                                         >
                                             Delete
                                         </button>
+
+
                                     </td>
                                 </tr>
                             ))}

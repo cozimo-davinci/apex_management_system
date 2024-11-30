@@ -1,6 +1,8 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EditEmployee() {
     const location = useLocation();
@@ -37,20 +39,50 @@ export default function EditEmployee() {
             );
 
             if (response.status === 200) {
-                alert('Employee updated successfully!');
-                navigate('/employee');
+                toast.success('Employee updated successfully!', {
+                    position: 'top-right',
+                    autoClose: 3000, // 3 seconds
+                });
+
+                // Navigate after a delay to allow the user to see the notification
+                setTimeout(() => {
+                    navigate('/employee');
+                }, 3000);
             } else {
-                alert('Failed to update employee. Please try again.');
+                toast.error('Failed to update employee. Please try again.', {
+                    position: 'top-right',
+                });
             }
         } catch (error) {
             console.error('Error updating employee:', error);
-            alert('An error occurred while updating the employee. Please try again.');
+            const errorMessage =
+                error.response?.data?.message || 'An error occurred while updating the employee. Please try again.';
+            toast.error(errorMessage, {
+                position: 'top-right',
+            });
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-900">
-            <div className="bg-green-600 w-full max-w-md py-8 px-14 rounded-lg shadow-lg">
+        <div className="flex justify-center items-center min-h-screen bg-black">
+            {/* Toastify Container */}
+            <ToastContainer />
+
+            <Link
+                to="/employee"
+                className="absolute top-20 left-8
+                text-white font-bold bg-purple-600 
+                rounded-md shadow-md shadow-white hover:shadow-yellow-400 p-4
+                border-black border-4 hover:scale-105"
+            >
+                Back
+            </Link>
+
+            <div
+                className="bg-black border-white border-4 
+            w-full max-w-md py-8 px-14 rounded-lg shadow-lg shadow-white hover:scale-100 
+            hover:shadow-red-600"
+            >
                 <h1 className="text-2xl font-bold text-white text-center mb-6">Edit Employee</h1>
 
                 <form onSubmit={handleEditEmployee} className="space-y-5">
@@ -119,7 +151,7 @@ export default function EditEmployee() {
                     </div>
                     <button
                         type="submit"
-                        className="w-full h-10 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors"
+                        className="w-full h-10 bg-orange-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors"
                     >
                         Update Employee
                     </button>

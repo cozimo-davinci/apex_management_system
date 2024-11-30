@@ -32,7 +32,7 @@ export default function FindEmployee() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 p-6">
+        <div className="min-h-screen bg-black p-6">
             <h1 className="text-2xl text-white font-bold mt-12 mb-5 text-center">Employee Search Results</h1>
 
             {employees.length > 0 ? (
@@ -74,13 +74,15 @@ export default function FindEmployee() {
                                     </td>
                                     <td className="px-4 py-2 border-white border-2">
                                         <button
-                                            className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 mr-2"
+                                            className="bg-yellow-500 text-white px-3 py-2 rounded-md hover:bg-yellow-600 mr-2 font-bold
+                                            border-black border-2 shadow-md hover:shadow-white hover:scale-105"
                                             onClick={() => navigate('/edit-employee', { state: { employee } })}
                                         >
                                             Edit
                                         </button>
                                         <button
-                                            className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
+                                            className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 font-bold
+                                            border-black border-2 shadow-md hover:shadow-white hover:scale-105"
                                             onClick={() => deleteEmployee(employee._id)}
                                         >
                                             Delete

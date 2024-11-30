@@ -1,10 +1,10 @@
-import React from 'react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUpForm() {
-
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -30,32 +30,45 @@ export default function SignUpForm() {
                 localStorage.setItem('refreshToken', refreshToken);
 
                 // Notify and navigate
-                alert(message || "User Created Successfully");
-                console.log("User Created Successfully", signUpResponse.data);
-                navigate('/login');
+                toast.success(message || 'User created successfully!', {
+                    position: 'top-right',
+                    autoClose: 3000, // 3 seconds
+                });
+
+                // Navigate after a short delay
+                setTimeout(() => {
+                    navigate('/login');
+                }, 3000);
             } else {
-                // Fallback if success is explicitly false
-                alert(message || "User Creation Failed");
-                console.log("User Creation Failed", signUpResponse.data);
+                // Show error notification
+                toast.error(message || 'User creation failed.', {
+                    position: 'top-right',
+                });
             }
         } catch (error) {
-            // Handle any unexpected errors from the backend
-            if (error.response) {
-                alert(error.response.data.message || "An error occurred during sign-up.");
-                console.log("Sign-up error", error.response.data);
-            } else {
-                alert("Unable to connect to the server. Please try again later.");
-                console.log("Server connection error", error);
-            }
+            // Handle backend errors
+            const errorMessage =
+                error.response?.data?.message || 'An error occurred during sign-up.';
+            toast.error(errorMessage, {
+                position: 'top-right',
+            });
         }
     };
 
-
     return (
-        <div className="bg-emerald-500 w-96 h-auto py-8 px-6 rounded-lg shadow-lg shadow-slate-300 flex justify-center items-center mx-auto my-20 transition-transform duration-300 ease-in-out hover:scale-105">
+        <div
+            className="bg-black w-96 h-auto 
+        py-8 px-6 rounded-lg shadow-lg shadow-slate-300 
+        flex justify-center items-center mx-auto my-20 
+        transition-transform duration-300 ease-in-out hover:scale-105
+        border-white border-4"
+        >
+            {/* Toastify Container */}
+            <ToastContainer />
+
             <form>
                 <div className="flex flex-col justify-center items-center">
-                    <label className="text-black font-semibold text-2xl mt-4">Email</label>
+                    <label className="text-white font-semibold text-2xl mt-4">Email</label>
                     <input
                         type="email"
                         className="w-80 h-10 rounded-md mt-2 px-2"
@@ -63,30 +76,35 @@ export default function SignUpForm() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <label className="text-black font-semibold  text-2xl mt-4">Username</label>
+                    <label className="text-white font-semibold  text-2xl mt-4">Username</label>
                     <input
-                        type='text'
-                        className='w-80 h-10 rounded-md mt-2 px-2'
-                        placeholder='salazar15'
+                        type="text"
+                        className="w-80 h-10 rounded-md mt-2 px-2"
+                        placeholder="salazar15"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    <label className="text-black font-semibold text-2xl mt-4">Password</label>
+                    <label className="text-white font-semibold text-2xl mt-4">Password</label>
                     <input
                         type="password"
                         className="w-80 h-10 rounded-md mt-2 px-2"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-
                     />
-                    <button className="bg-blue-500 text-white font-bold w-80 h-10 rounded-md mt-6 hover:bg-blue-600 transition-colors"
+                    <button
+                        className="bg-orange-500 text-white font-bold w-80 h-10 rounded-md mt-6 hover:bg-blue-600 transition-colors"
                         onClick={handleSignUp}
                     >
                         Sign Up
                     </button>
+
+                    <Link className="mt-5 mb-3 text-xl text-white font-semibold" to="/login">
+                        Already have an account?{' '}
+                        <span className="text-blue-700 font-bold hover:scale-105">Sign In</span>
+                    </Link>
                 </div>
             </form>
         </div>
-    )
+    );
 }
