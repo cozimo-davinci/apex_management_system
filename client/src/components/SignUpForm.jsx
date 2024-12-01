@@ -15,7 +15,7 @@ export default function SignUpForm() {
 
         try {
             // Make the API request
-            const signUpResponse = await axios.post('http://localhost:3002/api/v1/user/signup', {
+            const signUpResponse = await axios.post('https://apex-management-system-backend.onrender.com/api/v1/user/signup', {
                 email,
                 username,
                 password,

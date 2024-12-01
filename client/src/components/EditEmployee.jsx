@@ -26,7 +26,7 @@ export default function EditEmployee() {
 
         try {
             const response = await axios.put(
-                `http://localhost:3002/api/v1/emp/employees/${employee._id}`,
+                `https://apex-management-system-backend.onrender.com/api/v1/emp/employees/${employee._id}`,
                 {
                     first_name: firstName,
                     last_name: lastName,

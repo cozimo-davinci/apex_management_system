@@ -13,7 +13,7 @@ export default function EmployeeList() {
     useEffect(() => {
         const fetchEmployees = async () => {
             try {
-                const response = await axios.get('http://localhost:3002/api/v1/emp/employees');
+                const response = await axios.get('https://apex-management-system-backend.onrender.com/api/v1/emp/employees');
                 setEmployees(response.data);
             } catch (error) {
                 console.error('Error fetching employees:', error);
@@ -39,7 +39,7 @@ export default function EmployeeList() {
             params.append('position', searchQuery.trim());
         }
 
-        const url = `http://localhost:3002/api/v1/emp/search?${params.toString()}`;
+        const url = `https://apex-management-system-backend.onrender.com/api/v1/emp/search?${params.toString()}`;
 
         try {
             const response = await axios.get(url);
@@ -70,7 +70,7 @@ export default function EmployeeList() {
 
     const deleteEmployee = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3002/api/v1/emp/employees/${id}`);
+            const response = await axios.delete(`https://apex-management-system-backend.onrender.com/api/v1/emp/employees/${id}`);
             if (response.status === 200) {
                 toast.success('Employee has been deleted successfully!', {
                     position: 'top-right',
