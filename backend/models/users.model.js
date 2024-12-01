@@ -4,10 +4,7 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const UserSchema = mongoose.Schema(
     {
-        _id: {
-            type: ObjectId,
-            default: new mongoose.Types.ObjectId(),
-        },
+
         username: {
             type: String,
             required: [true, "Please enter your username!"]
