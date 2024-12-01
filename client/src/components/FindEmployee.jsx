@@ -12,7 +12,7 @@ export default function FindEmployee() {
     // Delete employee function
     const deleteEmployee = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3002/api/v1/emp/employees/${id}`);
+            const response = await axios.delete(`https://apex-management-system-backend.onrender.com/api/v1/emp/employees/${id}`);
             if (response.status === 200) {
                 alert(response.data.message);
                 // Remove the deleted employee from the state
