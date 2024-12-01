@@ -22,7 +22,7 @@ export default function ViewEmployee() {
 
         const fetchEmployee = async () => {
             try {
-                const response = await axios.get(`http://localhost:3002/api/v1/emp/employees/${employeeId}`);
+                const response = await axios.get(`https://apex-management-system-backend.onrender.com/api/v1/emp/employees/${employeeId}`);
                 setEmployee(response.data);
             } catch (err) {
                 setError('Failed to fetch employee data');
